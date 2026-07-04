@@ -1,0 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local database
+*.db
+
+# Local secrets / env
+.env
+.env.local
+.env.*.local
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Markdown files
+git.md
+upgrade-python.md
+db.md
