@@ -45,19 +45,6 @@ def init_database() -> None:
                     password_hash TEXT NOT NULL
                 );
 
-                CREATE TABLE IF NOT EXISTS gold_data (
-                    id BIGSERIAL PRIMARY KEY,
-                    external_id TEXT NOT NULL UNIQUE,
-                    price NUMERIC(18, 2) NOT NULL CHECK (price > 0),
-                    value NUMERIC(18, 4) NOT NULL CHECK (value > 0),
-                    unit TEXT NOT NULL CHECK (unit IN ('fen', 'mace', 'tael')),
-                    currency TEXT NOT NULL DEFAULT 'VND' CHECK (currency = 'VND'),
-                    release_date DATE NOT NULL,
-                    location TEXT NOT NULL,
-                    description TEXT NULL,
-                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-                );
-
                 CREATE TABLE IF NOT EXISTS refresh_tokens (
                     jti TEXT PRIMARY KEY,
                     user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -93,12 +80,6 @@ def init_database() -> None:
                     role_id BIGINT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
                     PRIMARY KEY (user_id, role_id)
                 );
-
-                ALTER TABLE gold_data
-                ADD COLUMN IF NOT EXISTS user_id BIGINT NULL REFERENCES users(id) ON DELETE CASCADE;
-
-                CREATE INDEX IF NOT EXISTS idx_gold_data_user_id
-                ON gold_data(user_id);
 
                 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id
                 ON refresh_tokens(user_id);

@@ -296,12 +296,12 @@ JWT_SECRET_KEY = generate a strong random value (64+ chars)
 JWT_ALGORITHM = HS256
 JWT_EXPIRE_MINUTES = 15
 JWT_REFRESH_EXPIRE_MINUTES = 10080
-CORS_ALLOW_ORIGINS = your frontend URLs, comma-separated
+CORS_ALLOW_ORIGINS = https://linguyenvivito.github.io,http://localhost:8081,http://127.0.0.1:8081,http://localhost:19006,http://127.0.0.1:19006
 DATABASE_URL = your production Postgres URL
 CORS_STRICT_ORIGIN_CHECK = true
 CSRF_ENABLED = true
 CSRF_COOKIE_BASED_ONLY = true
-CSRF_TRUSTED_ORIGINS = same origin list as frontend URLs
+CSRF_TRUSTED_ORIGINS = https://linguyenvivito.github.io,http://localhost:8081,http://127.0.0.1:8081,http://localhost:19006,http://127.0.0.1:19006
 SECURITY_HEADERS_ENABLED = true
 SECURITY_HSTS_ENABLED = true
 RATE_LIMITING_ENABLED = true
@@ -309,7 +309,7 @@ RATE_LIMITING_ENABLED = true
 # Production
 
 ## Live Back End URL
-https://python-todo-fullstack-project.onrender.com/docs
+https://python-todo-fullstack-project.onrender.com/
 
 ## Live Front End URL
 https://linguyenvivito.github.io/python-todo-fullstack-project

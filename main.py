@@ -23,9 +23,9 @@ from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.slices.auth.router import router as auth_router
 from app.slices.audit.router import router as audit_router
 from app.slices.email.router import router as email_router
-from app.slices.tasks.router import router as tasks_router
 from app.slices.roles.router import router as roles_router
 from app.slices.users.router import router as users_router
+from app.slices.orders.router import router as order_router
 
 logger = logging.getLogger("app.security.rate_limit")
 APP_STARTED_AT = time()
@@ -95,7 +95,7 @@ def create_app() -> FastAPI:
 
     cors_allow_origins = os.getenv(
         "CORS_ALLOW_ORIGINS",
-        "http://127.0.0.1:8880,http://localhost:8880,http://127.0.0.1:5173,http://localhost:5173",
+        "exp://192.168.1.249:8081,https://linguyenvivito.github.io,http://127.0.0.1:8880,http://localhost:8880,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8081,http://localhost:8081,http://127.0.0.1:19006,http://localhost:19006",
     )
     allow_origins = [origin.strip() for origin in cors_allow_origins.split(",") if origin.strip()]
 
@@ -160,9 +160,9 @@ def create_app() -> FastAPI:
     app.include_router(auth_router)
     app.include_router(audit_router)
     app.include_router(email_router)
-    app.include_router(tasks_router)
     app.include_router(roles_router)
     app.include_router(users_router)
+    app.include_router(order_router)
     return app
 
 
