@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, status
 
 from app.slices.orders.models import OrderResponse
 
