@@ -42,3 +42,13 @@ def test_can_disable_strict_origin_check(monkeypatch) -> None:
     response = client.get("/health", headers={"Origin": "http://evil.example"})
 
     assert response.status_code == 200
+
+
+def test_allows_request_from_any_origin_when_wildcard_configured(monkeypatch) -> None:
+    monkeypatch.setenv("CORS_ALLOW_ORIGINS", "*")
+    monkeypatch.setenv("CORS_STRICT_ORIGIN_CHECK", "true")
+    client = TestClient(create_app())
+
+    response = client.get("/health", headers={"Origin": "http://evil.example"})
+
+    assert response.status_code == 200

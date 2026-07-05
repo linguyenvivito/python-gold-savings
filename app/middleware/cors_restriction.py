@@ -10,6 +10,7 @@ class CorsRestrictionMiddleware(BaseHTTPMiddleware):
     def __init__(self, app, allow_origins: Iterable[str], strict: bool = True) -> None:
         super().__init__(app)
         self._allow_origins: Set[str] = {origin.strip() for origin in allow_origins if origin.strip()}
+        self._allow_all_origins = "*" in self._allow_origins
         self._strict = strict
 
     def _is_same_origin(self, origin: str, request: Request) -> bool:
@@ -24,7 +25,7 @@ class CorsRestrictionMiddleware(BaseHTTPMiddleware):
         if not origin:
             return await call_next(request)
 
-        if origin in self._allow_origins or self._is_same_origin(origin, request):
+        if self._allow_all_origins or origin in self._allow_origins or self._is_same_origin(origin, request):
             return await call_next(request)
 
         return JSONResponse(

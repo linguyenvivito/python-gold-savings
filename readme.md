@@ -234,11 +234,11 @@ CI runs on push and pull request:
 # Environment Variables
 
 - `DATABASE_URL` (optional): PostgreSQL connection string.
-- `CORS_ALLOW_ORIGINS` (optional): comma-separated allowlist of origins allowed for cross-origin browser calls.
+- `CORS_ALLOW_ORIGINS` (optional): comma-separated allowlist of origins allowed for cross-origin browser calls. Set `*` to allow any origin.
 - `CORS_STRICT_ORIGIN_CHECK` (optional): when `true` (default), requests with non-allowlisted `Origin` header are rejected with 403.
 - `CSRF_ENABLED` (optional): enables CSRF middleware checks for unsafe methods (`POST`, `PUT`, `PATCH`, `DELETE`). Default `true`.
 - `CSRF_COOKIE_BASED_ONLY` (optional): when `true` (default), CSRF checks are applied only if request contains cookies.
-- `CSRF_TRUSTED_ORIGINS` (optional): comma-separated trusted origins for CSRF validation. Defaults to `CORS_ALLOW_ORIGINS`.
+- `CSRF_TRUSTED_ORIGINS` (optional): comma-separated trusted origins for CSRF validation. Defaults to `CORS_ALLOW_ORIGINS`. Set `*` to trust any origin.
 - `SECURITY_HEADERS_ENABLED` (optional): enables standard security headers middleware. Default `true`.
 - `SECURITY_HSTS_ENABLED` (optional): enables `Strict-Transport-Security` header for HTTPS requests. Default `true`.
 - `REQUEST_LOGGING_ENABLED` (optional): enables app request logging middleware. Default `true`.

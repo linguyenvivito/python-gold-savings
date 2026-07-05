@@ -128,3 +128,20 @@ def test_csrf_can_be_disabled(monkeypatch) -> None:
     )
 
     assert response.status_code == 201
+
+
+def test_csrf_allows_cookie_request_from_any_origin_when_wildcard_configured(monkeypatch) -> None:
+    monkeypatch.setenv("CORS_ALLOW_ORIGINS", "*")
+    monkeypatch.setenv("CORS_STRICT_ORIGIN_CHECK", "false")
+    monkeypatch.setenv("CSRF_TRUSTED_ORIGINS", "*")
+    monkeypatch.setenv("CSRF_ENABLED", "true")
+    monkeypatch.setenv("CSRF_COOKIE_BASED_ONLY", "true")
+    client = _client_with_fake_auth(monkeypatch)
+
+    response = client.post(
+        "/auth/register",
+        headers={"Origin": "http://evil.example", "Cookie": "session=fake"},
+        json={"username": _unique_username(), "password": "password123"},
+    )
+
+    assert response.status_code == 201

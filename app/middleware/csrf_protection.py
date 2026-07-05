@@ -21,6 +21,7 @@ class CsrfProtectionMiddleware(BaseHTTPMiddleware):
         self._trusted_origins: Set[str] = {
             origin.strip() for origin in trusted_origins if origin.strip()
         }
+        self._trust_all_origins = "*" in self._trusted_origins
         self._enabled = enabled
         self._cookie_based_only = cookie_based_only
 
@@ -37,7 +38,8 @@ class CsrfProtectionMiddleware(BaseHTTPMiddleware):
 
     def _is_trusted_origin(self, candidate_origin: str, request: Request) -> bool:
         return (
-            candidate_origin in self._trusted_origins
+            self._trust_all_origins
+            or candidate_origin in self._trusted_origins
             or candidate_origin == self._request_origin(request)
         )
 
