@@ -12,20 +12,22 @@ from slowapi.middleware import SlowAPIMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
-from app.core.database import get_connection
-from app.core.logging_config import configure_logging
-from app.core.rate_limit import limiter
-from app.middleware.cors_restriction import CorsRestrictionMiddleware
-from app.middleware.csrf_protection import CsrfProtectionMiddleware
-from app.middleware.request_logging import RequestLoggingMiddleware
-from app.middleware.request_metrics import RequestMetricsMiddleware
-from app.middleware.security_headers import SecurityHeadersMiddleware
-from app.slices.auth.router import router as auth_router
-from app.slices.audit.router import router as audit_router
-from app.slices.email.router import router as email_router
-from app.slices.roles.router import router as roles_router
-from app.slices.users.router import router as users_router
-from app.slices.orders.router import router as order_router
+from src.core.logging_config import configure_logging
+from src.core.database import get_connection
+from src.core.rate_limit import limiter
+from src.middleware.cors_restriction import CorsRestrictionMiddleware
+from src.middleware.csrf_protection import CsrfProtectionMiddleware
+from src.middleware.request_logging import RequestLoggingMiddleware
+from src.middleware.request_metrics import RequestMetricsMiddleware
+from src.middleware.security_headers import SecurityHeadersMiddleware
+
+# Store router
+from src.features.stores.get.endpoint import router as stores_get_router
+
+from src.features.orders.router import router as orders_router
+from src.features.accounts.router import router as accounts_router
+from src.features.users.create.endpoint import router as user_create_router
+from src.features.users.get.endpoint import router as user_get_router
 
 logger = logging.getLogger("app.security.rate_limit")
 APP_STARTED_AT = time()
@@ -157,12 +159,11 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
     app.add_middleware(SlowAPIMiddleware)
-    app.include_router(auth_router)
-    app.include_router(audit_router)
-    app.include_router(email_router)
-    app.include_router(roles_router)
-    app.include_router(users_router)
-    app.include_router(order_router)
+    app.include_router(user_create_router)
+    app.include_router(user_get_router)
+    app.include_router(orders_router)
+    app.include_router(accounts_router)
+    app.include_router(stores_get_router)
     return app
 
 

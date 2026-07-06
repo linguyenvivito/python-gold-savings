@@ -1,4 +1,4 @@
-from app.core.sanitization import sanitize_optional_text, sanitize_text
+from src.core.sanitization import sanitize_optional_text, sanitize_text
 
 
 def test_sanitize_text_removes_html_tags() -> None:

@@ -3,7 +3,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from app.middleware.request_logging import RequestLoggingMiddleware
+from src.middleware.request_logging import RequestLoggingMiddleware
 
 
 def test_request_logging_logs_exception_branch(caplog) -> None:

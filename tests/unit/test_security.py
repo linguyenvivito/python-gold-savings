@@ -1,7 +1,7 @@
 import pytest
 
-from app.core import security as security_module
-from app.core.security import (
+from src.core import security as security_module
+from src.core.security import (
     TokenDecodeError,
     create_access_token,
     create_refresh_token,
@@ -87,7 +87,7 @@ def test_decode_refresh_token_rejects_access_token() -> None:
 
 def test_decode_access_token_rejects_invalid_token(mocker) -> None:
     mocker.patch(
-        "app.core.security.jwt.decode",
+        "src.core.security.jwt.decode",
         side_effect=security_module.InvalidTokenError("invalid"),
     )
 
@@ -97,7 +97,7 @@ def test_decode_access_token_rejects_invalid_token(mocker) -> None:
 
 def test_decode_refresh_token_rejects_invalid_token(mocker) -> None:
     mocker.patch(
-        "app.core.security.jwt.decode",
+        "src.core.security.jwt.decode",
         side_effect=security_module.InvalidTokenError("invalid"),
     )
 

@@ -1,6 +1,6 @@
 from starlette.requests import Request
 
-from app.core.rate_limit import _client_identifier, is_rate_limiting_enabled, rate_limit
+from src.core.rate_limit import _client_identifier, is_rate_limiting_enabled, rate_limit
 
 
 def _build_request(headers: dict[str, str] | None = None) -> Request:
@@ -37,7 +37,7 @@ def test_client_identifier_uses_explicit_client_id() -> None:
 def test_client_identifier_falls_back_to_remote_address(mocker) -> None:
     request = _build_request()
     remote_address = mocker.patch(
-        "app.core.rate_limit.get_remote_address", return_value="198.51.100.8"
+        "src.core.rate_limit.get_remote_address", return_value="198.51.100.8"
     )
 
     assert _client_identifier(request) == "198.51.100.8"

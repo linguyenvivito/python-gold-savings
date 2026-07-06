@@ -2,8 +2,8 @@ import argparse
 import os
 from typing import List, Sequence, Tuple
 
-from app.core.database import get_connection, init_database
-from app.core.security import hash_password
+from src.core.database import get_connection, init_database
+from src.core.security import hash_password
 
 DEFAULT_TASKS: List[Tuple[str, str]] = [
     ("Plan sprint backlog", "Break down user stories for this week"),

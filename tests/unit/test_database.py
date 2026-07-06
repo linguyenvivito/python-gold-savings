@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-import app.core.database as database_module
+import src.core.database as database_module
 
 
 def test_get_database_url_reads_env(mocker) -> None:
