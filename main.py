@@ -29,6 +29,8 @@ from src.features.accounts.router import router as accounts_router
 from src.features.users.create.endpoint import router as user_create_router
 from src.features.users.get.endpoint import router as user_get_router
 
+from src.features.gold.router import router as gold_router
+
 logger = logging.getLogger("app.security.rate_limit")
 APP_STARTED_AT = time()
 
@@ -164,6 +166,7 @@ def create_app() -> FastAPI:
     app.include_router(orders_router)
     app.include_router(accounts_router)
     app.include_router(stores_get_router)
+    app.include_router(gold_router)
     return app
 
 
