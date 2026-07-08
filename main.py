@@ -30,6 +30,13 @@ from src.features.users.create.endpoint import router as user_create_router
 from src.features.users.get.endpoint import router as user_get_router
 
 from src.features.gold.router import router as gold_router
+from src.features.gold.pnj.router import router as gold_pnj_router
+from src.features.gold.sjc.router import router as gold_sjc_router
+from src.features.gold.doji.router import router as gold_doji_router
+from src.features.gold.kimmon.router import router as gold_kimmon_router
+from src.features.gold.mihong.router import router as gold_mihong_router
+from src.features.gold.baotinmanhhai.router import router as gold_baotinmanhhai_router
+from src.features.gold.baotinminhchau.router import router as gold_baotinminhchau_router
 
 logger = logging.getLogger("app.security.rate_limit")
 APP_STARTED_AT = time()
@@ -160,6 +167,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    
     app.add_middleware(SlowAPIMiddleware)
     app.include_router(user_create_router)
     app.include_router(user_get_router)
@@ -167,7 +175,14 @@ def create_app() -> FastAPI:
     app.include_router(accounts_router)
     app.include_router(stores_get_router)
     app.include_router(gold_router)
-    return app
+    app.include_router(gold_pnj_router)
+    app.include_router(gold_sjc_router)
+    app.include_router(gold_doji_router)
+    app.include_router(gold_kimmon_router)
+    app.include_router(gold_mihong_router)
+    app.include_router(gold_baotinmanhhai_router)
+    app.include_router(gold_baotinminhchau_router)
 
+    return app
 
 app = create_app()

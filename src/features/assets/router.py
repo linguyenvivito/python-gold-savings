@@ -15,7 +15,7 @@ def health_check():
 def get_assets() -> list[AssetResponse]:
     # Placeholder for actual asset retrieval logic
     assets = [
-        AssetResponse(id=1, code="XAU_24K", type="RING", unit="mace"),
-        AssetResponse(id=2, code="XAU_9999", type="BAR", unit="mace"),
+        AssetResponse(id=1, code="RING_9999", type="RING", unit="mace"),
+        AssetResponse(id=2, code="BAR_9999", type="BAR", unit="mace"),
     ]
     return assets
