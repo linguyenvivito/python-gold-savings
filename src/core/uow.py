@@ -1,4 +1,5 @@
 from src.core.database import SessionLocal
+from src.infrastructure.repositories.notification_repository import NotificationRepository
 from src.infrastructure.repositories.user_repository import UserRepository
 
 class UnitOfWork:
@@ -8,6 +9,7 @@ class UnitOfWork:
         self.session = SessionLocal()
 
         self.users = UserRepository(self.session)
+        self.notifications = NotificationRepository(self.session)
 
     def commit(self):
 

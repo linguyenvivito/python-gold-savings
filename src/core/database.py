@@ -79,6 +79,29 @@ def init_database() -> None:
                     culture TEXT NOT NULL,
                     note TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS scheduled_notifications (
+                    id BIGSERIAL PRIMARY KEY,
+                    title TEXT NOT NULL,
+                    message TEXT NOT NULL,
+                    scheduled_for TIMESTAMPTZ NOT NULL,
+                    status TEXT NOT NULL DEFAULT 'pending',
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                    dispatched_at TIMESTAMPTZ NULL
+                );
+                CREATE INDEX IF NOT EXISTS idx_scheduled_notifications_pending_time
+                    ON scheduled_notifications (status, scheduled_for);
+
+                CREATE TABLE IF NOT EXISTS notifications (
+                    id BIGSERIAL PRIMARY KEY,
+                    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                    title TEXT NOT NULL,
+                    message TEXT NOT NULL,
+                    scheduled_notification_id BIGINT NULL REFERENCES scheduled_notifications(id) ON DELETE SET NULL,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                    read_at TIMESTAMPTZ NULL
+                );
+                CREATE INDEX IF NOT EXISTS idx_notifications_user_created_at
+                    ON notifications (user_id, created_at DESC);
                 """
             )
             connection.commit()

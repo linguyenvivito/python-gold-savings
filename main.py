@@ -28,6 +28,9 @@ from src.features.orders.router import router as orders_router
 from src.features.accounts.router import router as accounts_router
 from src.features.users.create.endpoint import router as user_create_router
 from src.features.users.get.endpoint import router as user_get_router
+from src.features.notifications.router import router as notifications_router
+from src.features.notifications.scheduler import is_scheduler_enabled
+from src.features.notifications.scheduler import scheduler
 
 from src.features.gold.router import router as gold_router
 from src.features.gold.pnj.router import router as gold_pnj_router
@@ -104,6 +107,15 @@ def create_app() -> FastAPI:
             return Response(status_code=404)
         return Response(content=generate_latest().decode("utf-8"), media_type=CONTENT_TYPE_LATEST)
 
+    @app.on_event("startup")
+    async def start_notification_scheduler() -> None:
+        if is_scheduler_enabled():
+            scheduler.start()
+
+    @app.on_event("shutdown")
+    async def stop_notification_scheduler() -> None:
+        await scheduler.stop()
+
     cors_allow_origins = os.getenv(
         "CORS_ALLOW_ORIGINS",
         "*",
@@ -171,6 +183,7 @@ def create_app() -> FastAPI:
     app.add_middleware(SlowAPIMiddleware)
     app.include_router(user_create_router)
     app.include_router(user_get_router)
+    app.include_router(notifications_router)
     app.include_router(orders_router)
     app.include_router(accounts_router)
     app.include_router(stores_get_router)

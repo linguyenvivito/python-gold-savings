@@ -123,6 +123,10 @@ Base URL: `http://127.0.0.1:8888`
 - `DELETE /tasks/{task_id}` delete task
 - `GET /email/templates` list supported email templates (requires authentication)
 - `POST /email/send` send an email via SMTP (requires authentication)
+- `POST /notifications/schedule` schedule a notification broadcast to all users
+- `POST /notifications/dispatch-due` manually dispatch due scheduled notifications
+- `GET /notifications/users/{user_id}` list notifications for a user
+- `PATCH /notifications/users/{user_id}/{notification_id}/read` mark a notification as read
 
 Task status values:
 
@@ -258,6 +262,8 @@ CI runs on push and pull request:
 - `RATE_LIMIT_TASKS_DELETE` (optional): delete task endpoint rate, default `120/minute`.
 - `RATE_LIMIT_EMAIL_SEND` (optional): email send endpoint rate, default `20/minute`.
 - `SMTP_HOST` (required for email): SMTP server host.
+- `NOTIFICATION_SCHEDULER_ENABLED` (optional): enables background dispatch loop for scheduled notifications. Default `true`.
+- `NOTIFICATION_DISPATCH_INTERVAL_SECONDS` (optional): polling interval for checking due scheduled notifications. Default `30`.
 - `SMTP_PORT` (optional): SMTP server port, default `587`.
 - `SMTP_USE_TLS` (optional): enable STARTTLS for plain SMTP connections, default `true`.
 - `SMTP_USE_SSL` (optional): use SMTP over SSL, default `false`.
