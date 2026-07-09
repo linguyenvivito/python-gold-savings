@@ -127,6 +127,7 @@ Base URL: `http://127.0.0.1:8888`
 - `POST /notifications/dispatch-due` manually dispatch due scheduled notifications
 - `GET /notifications/users/{user_id}` list notifications for a user
 - `PATCH /notifications/users/{user_id}/{notification_id}/read` mark a notification as read
+- `POST /notifications/users/{user_id}/push-token` register Expo push token for a user
 
 Task status values:
 

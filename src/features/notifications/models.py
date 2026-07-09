@@ -30,3 +30,12 @@ class UserNotificationResponse(BaseModel):
 
 class MarkAsReadResponse(BaseModel):
     marked_read: bool
+
+
+class RegisterPushTokenRequest(BaseModel):
+    token: str = Field(min_length=10, max_length=300)
+    provider: str = Field(default="expo", min_length=2, max_length=30)
+
+
+class RegisterPushTokenResponse(BaseModel):
+    registered: bool

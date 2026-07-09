@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from sqlalchemy import select
 
 from src.domains.models import Notification
+from src.domains.models import NotificationPushToken
 from src.domains.models import ScheduledNotification
 from src.domains.models import User
 from src.domains.repositories import INotificationRepository
@@ -78,4 +79,29 @@ class NotificationRepository(INotificationRepository):
             notification.read_at = read_at or datetime.now(timezone.utc)
             self.session.flush()
 
+        return True
+
+    def register_push_token(self, user_id, provider, token):
+        user = self.session.get(User, user_id)
+        if user is None:
+            return False
+
+        existing_token = self.session.execute(
+            select(NotificationPushToken).where(NotificationPushToken.token == token)
+        ).scalar_one_or_none()
+
+        if existing_token is not None:
+            existing_token.user_id = user_id
+            existing_token.provider = provider
+            self.session.flush()
+            return True
+
+        self.session.add(
+            NotificationPushToken(
+                user_id=user_id,
+                provider=provider,
+                token=token,
+            )
+        )
+        self.session.flush()
         return True

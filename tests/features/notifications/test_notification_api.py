@@ -38,6 +38,7 @@ class FakeNotificationRepository:
                 )
             ]
         }
+        self.push_tokens = {}
 
     def schedule_broadcast(self, title, message, scheduled_for):
         self._scheduled_id += 1
@@ -59,6 +60,16 @@ class FakeNotificationRepository:
                 item.read_at = read_at
                 return True
         return False
+
+    def register_push_token(self, user_id, provider, token):
+        if user_id not in self.notifications_by_user:
+            return False
+
+        self.push_tokens[token] = {
+            "user_id": user_id,
+            "provider": provider,
+        }
+        return True
 
 
 class FakeUnitOfWork:
@@ -124,5 +135,42 @@ def test_mark_notification_as_read_returns_404_when_missing(monkeypatch):
 
     client = TestClient(app)
     response = client.patch("/notifications/users/1/999/read")
+
+    assert response.status_code == 404
+
+
+def test_register_push_token_returns_success(monkeypatch):
+    monkeypatch.setenv("NOTIFICATION_SCHEDULER_ENABLED", "false")
+
+    app = create_app()
+    app.dependency_overrides[get_uow] = lambda: FakeUnitOfWork()
+
+    client = TestClient(app)
+    response = client.post(
+        "/notifications/users/1/push-token",
+        json={
+            "provider": "expo",
+            "token": "ExponentPushToken[exampleexampleexample]",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"registered": True}
+
+
+def test_register_push_token_returns_404_for_unknown_user(monkeypatch):
+    monkeypatch.setenv("NOTIFICATION_SCHEDULER_ENABLED", "false")
+
+    app = create_app()
+    app.dependency_overrides[get_uow] = lambda: FakeUnitOfWork()
+
+    client = TestClient(app)
+    response = client.post(
+        "/notifications/users/999/push-token",
+        json={
+            "provider": "expo",
+            "token": "ExponentPushToken[exampleexampleexample]",
+        },
+    )
 
     assert response.status_code == 404

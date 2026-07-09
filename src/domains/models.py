@@ -57,3 +57,20 @@ class Notification(Base):
     )
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
     read_at = Column(DateTime(timezone=True), nullable=True)
+
+
+class NotificationPushToken(Base):
+
+    __tablename__ = "notification_push_tokens"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    provider = Column(String, nullable=False, default="expo")
+    token = Column(String, nullable=False, unique=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+    updated_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )

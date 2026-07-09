@@ -102,6 +102,17 @@ def init_database() -> None:
                 );
                 CREATE INDEX IF NOT EXISTS idx_notifications_user_created_at
                     ON notifications (user_id, created_at DESC);
+
+                CREATE TABLE IF NOT EXISTS notification_push_tokens (
+                    id BIGSERIAL PRIMARY KEY,
+                    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                    provider TEXT NOT NULL DEFAULT 'expo',
+                    token TEXT NOT NULL UNIQUE,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+                CREATE INDEX IF NOT EXISTS idx_notification_push_tokens_user
+                    ON notification_push_tokens (user_id);
                 """
             )
             connection.commit()

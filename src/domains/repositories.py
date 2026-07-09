@@ -36,3 +36,7 @@ class INotificationRepository(ABC):
     @abstractmethod
     def mark_as_read(self, user_id, notification_id, read_at):
         pass
+
+    @abstractmethod
+    def register_push_token(self, user_id, provider, token):
+        pass

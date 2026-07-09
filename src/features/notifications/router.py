@@ -10,6 +10,8 @@ from src.core.uow import UnitOfWork
 from src.core.uow import get_uow
 from src.features.notifications.models import DispatchDueResponse
 from src.features.notifications.models import MarkAsReadResponse
+from src.features.notifications.models import RegisterPushTokenRequest
+from src.features.notifications.models import RegisterPushTokenResponse
 from src.features.notifications.models import ScheduleBroadcastRequest
 from src.features.notifications.models import ScheduleBroadcastResponse
 from src.features.notifications.models import UserNotificationResponse
@@ -108,3 +110,25 @@ def mark_notification_as_read(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Notification not found")
 
     return MarkAsReadResponse(marked_read=True)
+
+
+@router.post(
+    "/users/{user_id}/push-token",
+    response_model=RegisterPushTokenResponse,
+    status_code=status.HTTP_200_OK,
+)
+def register_push_token(
+    user_id: int,
+    request: RegisterPushTokenRequest,
+    uow: UnitOfWork = Depends(get_uow),
+) -> RegisterPushTokenResponse:
+    registered = uow.notifications.register_push_token(
+        user_id=user_id,
+        provider=request.provider.strip().lower(),
+        token=request.token.strip(),
+    )
+
+    if not registered:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return RegisterPushTokenResponse(registered=True)
