@@ -31,6 +31,7 @@ from src.features.users.get.endpoint import router as user_get_router
 from src.features.notifications.router import router as notifications_router
 from src.features.notifications.scheduler import is_scheduler_enabled
 from src.features.notifications.scheduler import scheduler
+from src.features.ai.router import router as ai_router
 
 from src.features.gold.router import router as gold_router
 from src.features.gold.pnj.router import router as gold_pnj_router
@@ -184,6 +185,7 @@ def create_app() -> FastAPI:
     app.include_router(user_create_router)
     app.include_router(user_get_router)
     app.include_router(notifications_router)
+    app.include_router(ai_router)
     app.include_router(orders_router)
     app.include_router(accounts_router)
     app.include_router(stores_get_router)

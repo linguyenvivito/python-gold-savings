@@ -128,6 +128,7 @@ Base URL: `http://127.0.0.1:8888`
 - `GET /notifications/users/{user_id}` list notifications for a user
 - `PATCH /notifications/users/{user_id}/{notification_id}/read` mark a notification as read
 - `POST /notifications/users/{user_id}/push-token` register Expo push token for a user
+- `POST /ai/transcribe` transcribe uploaded audio using OpenAI `gpt-4o-transcribe`
 
 Task status values:
 
@@ -275,6 +276,8 @@ CI runs on push and pull request:
 - `SMTP_TIMEOUT` (optional): SMTP connect timeout in seconds, default `10`.
 - `SMTP_MAX_RETRIES` (optional): retry count after first failed send attempt, default `2`.
 - `SMTP_RETRY_BACKOFF_SECONDS` (optional): base exponential backoff in seconds, default `0.5`.
+- `OPENAI_API_KEY` (required for `/ai/transcribe`): server-side OpenAI API key.
+- `OPENAI_TRANSCRIBE_MAX_BYTES` (optional): max accepted upload size for `/ai/transcribe`, default `26214400` (25 MB).
 
 Example PostgreSQL value:
 
