@@ -7,7 +7,7 @@ from .handler import CreateUserHandler
 
 router = APIRouter()
 
-@router.post("/users")
+@router.post("/users", tags=["Users"], summary="Create a new user")
 
 def create(
     command: CreateUserCommand,

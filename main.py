@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 import os
 import logging
 from time import time
@@ -12,6 +13,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
+from src.core.supabase_connection import init_supabase
 from src.core.logging_config import configure_logging
 from src.core.database import get_connection
 from src.core.rate_limit import limiter
@@ -42,9 +44,11 @@ from src.features.gold.mihong.router import router as gold_mihong_router
 from src.features.gold.baotinmanhhai.router import router as gold_baotinmanhhai_router
 from src.features.gold.baotinminhchau.router import router as gold_baotinminhchau_router
 
+from src.features.supabase.health.endpoint import router as health_router # <-- Import Health
+from src.features.auth.anonymous.endpoint import router as anonymous_auth_router
+
 logger = logging.getLogger("app.security.rate_limit")
 APP_STARTED_AT = time()
-
 
 def _handle_rate_limit_exceeded(request: Request, exc: Exception) -> Response:
     if isinstance(exc, RateLimitExceeded):
@@ -61,8 +65,24 @@ def _handle_rate_limit_exceeded(request: Request, exc: Exception) -> Response:
 
 def create_app() -> FastAPI:
     configure_logging()
-    app = FastAPI(title="Task Management API")
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        """Handles global startup hooks securely before routing traffic."""
+        print("🤖 Booting application environment clusters...")
+        # Initialize connection singleton pools safely
+        await init_supabase()
+        yield
+        print("🔌 Gracefully closing database pool nodes.")
+
+    app = FastAPI(
+        title="Task Management API",
+        version="1.0.0",
+        lifespan=lifespan
+        )
+    
     app.state.limiter = limiter
+
     app.add_exception_handler(RateLimitExceeded, _handle_rate_limit_exceeded)
 
     @app.get("/health")
@@ -197,6 +217,8 @@ def create_app() -> FastAPI:
     app.include_router(gold_mihong_router)
     app.include_router(gold_baotinmanhhai_router)
     app.include_router(gold_baotinminhchau_router)
+    app.include_router(health_router)  # <-- Include Health router
+    app.include_router(anonymous_auth_router)
 
     return app
 

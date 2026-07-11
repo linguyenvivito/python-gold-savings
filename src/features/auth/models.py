@@ -41,3 +41,17 @@ class TokenResponse(BaseModel):
     refresh_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+class AnonymousAuthUserResponse(BaseModel):
+    id: str
+    is_anonymous: bool | None = None
+
+
+class AnonymousAuthResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+    expires_in: int | None = None
+    expires_at: int | None = None
+    user: AnonymousAuthUserResponse
