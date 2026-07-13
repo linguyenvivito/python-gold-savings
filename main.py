@@ -26,7 +26,9 @@ from src.middleware.security_headers import SecurityHeadersMiddleware
 # Store router
 from src.features.stores.get.endpoint import router as stores_get_router
 
-from src.features.orders.router import router as orders_router
+from src.features.assets.router import router as assets_router
+
+from src.features.transaction.router import router as orders_router
 from src.features.accounts.router import router as accounts_router
 from src.features.users.create.endpoint import router as user_create_router
 from src.features.users.get.endpoint import router as user_get_router
@@ -219,6 +221,8 @@ def create_app() -> FastAPI:
     app.include_router(gold_baotinminhchau_router)
     app.include_router(health_router)  # <-- Include Health router
     app.include_router(anonymous_auth_router)
+
+    app.include_router(assets_router)  # <-- Include Assets router
 
     return app
 

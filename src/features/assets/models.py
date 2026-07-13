@@ -2,6 +2,9 @@ from pydantic import BaseModel
 
 class AssetResponse(BaseModel):
   id: int
-  code: str
-  type: str
-  unit: str
+  sku: str
+  product_type: str
+  purity: str
+  weight: float
+  weight_unit: str
+  quantity: int

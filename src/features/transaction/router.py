@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
 
-from src.features.orders.models import OrderResponse
+from src.features.transaction.models import OrderResponse
 
 router = APIRouter(prefix="/orders", tags=["orders"])
 
