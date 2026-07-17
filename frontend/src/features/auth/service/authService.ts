@@ -1,5 +1,5 @@
+import { StoredSession } from "..";
 import { loginUser, registerUser, refreshUserToken, revokeUserToken, ApiError } from "../api/authApi";
-import type { StoredSession } from "../storage/session";
 
 export type AuthSessionPayload = {
   user: {

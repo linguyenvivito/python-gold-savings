@@ -4,28 +4,28 @@ from src.core.sanitization import sanitize_text
 
 
 class RegisterRequest(BaseModel):
-    username: str = Field(..., min_length=3, max_length=50)
+    email: str = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=6, max_length=128)
 
-    @field_validator("username", mode="before")
+    @field_validator("email", mode="before")
     @classmethod
-    def sanitize_username(cls, value: str) -> str:
+    def sanitize_email(cls, value: str) -> str:
         return sanitize_text(value)
 
 
 class LoginRequest(BaseModel):
-    username: str = Field(..., min_length=3, max_length=50)
+    email: str = Field(..., min_length=3, max_length=50)
     password: str = Field(..., min_length=6, max_length=128)
 
-    @field_validator("username", mode="before")
+    @field_validator("email", mode="before")
     @classmethod
-    def sanitize_username(cls, value: str) -> str:
+    def sanitize_email(cls, value: str) -> str:
         return sanitize_text(value)
 
 
 class UserResponse(BaseModel):
-    id: int
-    username: str
+    id: str
+    email: str
 
 
 class RefreshTokenRequest(BaseModel):

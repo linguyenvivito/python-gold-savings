@@ -91,7 +91,7 @@ def test_init_database_postgres_uses_cursor_and_closes(mocker) -> None:
     database_module.init_database()
 
     assert len(fake_connection.cursor_obj.executed_sql) == 1
-    assert "BIGSERIAL" in fake_connection.cursor_obj.executed_sql[0]
-    assert "refresh_tokens" in fake_connection.cursor_obj.executed_sql[0]
+    assert "BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY" in fake_connection.cursor_obj.executed_sql[0]
+    assert "notification_push_tokens" in fake_connection.cursor_obj.executed_sql[0]
     assert fake_connection.cursor_obj.closed is True
     assert fake_connection.commit_calls == 1

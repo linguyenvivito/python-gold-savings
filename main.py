@@ -28,8 +28,8 @@ from src.features.stores.get.endpoint import router as stores_get_router
 
 from src.features.assets.router import router as assets_router
 
-from src.features.transaction.router import router as orders_router
-from src.features.accounts.router import router as accounts_router
+from src.features.transaction.endpoint import router as transactions_router
+from src.features.auth.profile.endpoint import router as accounts_router
 from src.features.users.create.endpoint import router as user_create_router
 from src.features.users.get.endpoint import router as user_get_router
 from src.features.notifications.router import router as notifications_router
@@ -37,7 +37,7 @@ from src.features.notifications.scheduler import is_scheduler_enabled
 from src.features.notifications.scheduler import scheduler
 from src.features.ai.router import router as ai_router
 
-from src.features.gold.router import router as gold_router
+from src.features.gold.endpoint import router as gold_router
 from src.features.gold.pnj.router import router as gold_pnj_router
 from src.features.gold.sjc.router import router as gold_sjc_router
 from src.features.gold.doji.router import router as gold_doji_router
@@ -47,7 +47,10 @@ from src.features.gold.baotinmanhhai.router import router as gold_baotinmanhhai_
 from src.features.gold.baotinminhchau.router import router as gold_baotinminhchau_router
 
 from src.features.supabase.health.endpoint import router as health_router # <-- Import Health
+
 from src.features.auth.anonymous.endpoint import router as anonymous_auth_router
+from src.features.auth.profile.endpoint import router as profile_auth_router
+from src.features.auth.signin.endpoint import router as signin_auth_router
 
 logger = logging.getLogger("app.security.rate_limit")
 APP_STARTED_AT = time()
@@ -208,7 +211,7 @@ def create_app() -> FastAPI:
     app.include_router(user_get_router)
     app.include_router(notifications_router)
     app.include_router(ai_router)
-    app.include_router(orders_router)
+    app.include_router(transactions_router)
     app.include_router(accounts_router)
     app.include_router(stores_get_router)
     app.include_router(gold_router)
@@ -220,7 +223,11 @@ def create_app() -> FastAPI:
     app.include_router(gold_baotinmanhhai_router)
     app.include_router(gold_baotinminhchau_router)
     app.include_router(health_router)  # <-- Include Health router
+
+    # Auth modules
     app.include_router(anonymous_auth_router)
+    app.include_router(profile_auth_router)
+    app.include_router(signin_auth_router)
 
     app.include_router(assets_router)  # <-- Include Assets router
 
